@@ -1,0 +1,38 @@
+# Configuration for 03_storyboard_gen service
+
+# LLM server configuration
+llm:
+  server_url: "http://localhost:8001"
+  max_tokens: 3000
+  temperature: 0.3
+  top_p: 0.9
+
+# Storyboard generation parameters
+generation:
+  shots_per_minute: 4  # Average shots per minute of music
+  min_shot_duration: 2.0  # Minimum shot duration in seconds
+  max_shot_duration: 8.0  # Maximum shot duration in seconds
+  prompt_length: "20-40"  # Target word count for prompts
+
+# Consistency settings
+consistency:
+  reuse_seeds: true
+  subject_grouping: true  # Group shots by subject for seed reuse
+  max_seeds: 10  # Maximum unique seeds to use
+
+# Validation rules
+validation:
+  schema_file: "configs/storyboard_schema.json"
+  require_vibe_words: true
+  min_prompt_words: 20
+  max_prompt_words: 40
+
+# Input/Output settings
+io:
+  inputs:
+    lyrics: "data/lyrics.json"
+    vibe_tags: "data/vibe_tags.json"
+    music_analysis: "data/music_analysis.json"
+    song_brief: "data/song_brief.txt"
+    suno_prompt: "data/suno_prompt.txt"
+  output: "data/storyboard.json" 

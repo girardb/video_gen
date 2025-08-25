@@ -1,0 +1,173 @@
+[
+  {
+    "start": 0.0,
+    "end": 4.0,
+    "prompt": "wide shot matching the song's opening mood with pop lighting",
+    "motion": "slow dolly",
+    "seed": 12345,
+    "model": "sdxl",
+    "ref_image": null
+  },
+  {
+    "start": 4.0,
+    "end": 8.0,
+    "prompt": "extreme close up of a bubbling brew",
+    "motion": "zoom in",
+    "seed": 12346,
+    "model": "sdxl",
+    "ref_image": null
+  },
+  {
+    "start": 8.0,
+    "end": 12.0,
+    "prompt": "mid shot of cavemen grunting with a smile",
+    "motion": "pan left",
+    "seed": 12347,
+    "model": "sdxl",
+    "ref_image": null
+  },
+  {
+    "start": 12.0,
+    "end": 16.0,
+    "prompt": "close up on a fiery cheer",
+    "motion": "zoom out",
+    "seed": 12348,
+    "model": "sdxl",
+    "ref_image": null
+  },
+  {
+    "start": 16.0,
+    "end": 20.0,
+    "prompt": "cut to a modern scene with a similar drink",
+    "motion": "jump cut",
+    "seed": 12349,
+    "model": "sdxl",
+    "ref_image": null
+  },
+  {
+    "start": 20.0,
+    "end": 24.0,
+    "prompt": "extreme close up of the drink with a label",
+    "motion": "tilt shift",
+    "seed": 12350,
+    "model": "sdxl",
+    "ref_image": null
+  },
+  {
+    "start": 24.0,
+    "end": 28.0,
+    "prompt": "wide shot of people drinking the modern version",
+    "motion": "slow pan",
+    "seed": 12351,
+    "model": "sdxl",
+    "ref_image": null
+  },
+  {
+    "start": 28.0,
+    "end": 32.0,
+    "prompt": "close up on a person smiling while drinking",
+    "motion": "steady shot",
+    "seed": 12352,
+    "model": "sdxl",
+    "ref_image": null
+  },
+  {
+    "start": 32.0,
+    "end": 36.0,
+    "prompt": "cut to a shot of the drink flowing",
+    "motion": "fade",
+    "seed": 12353,
+    "model": "sdxl",
+    "ref_image": null
+  },
+  {
+    "start": 36.0,
+    "end": 40.0,
+    "prompt": "extreme close up of fizzing bubbles",
+    "motion": "zoom in",
+    "seed": 12354,
+    "model": "sdxl",
+    "ref_image": null
+  },
+  {
+    "start": 40.0,
+    "end": 44.0,
+    "prompt": "wide shot of a party atmosphere",
+    "motion": "slow dolly",
+    "seed": 12355,
+    "model": "sdxl",
+    "ref_image": null
+  },
+  {
+    "start": 44.0,
+    "end": 48.0,
+    "prompt": "close up on a person dancing with energy",
+    "motion": "pan right",
+    "seed": 12356,
+    "model": "sdxl",
+    "ref_image": null
+  },
+  {
+    "start": 48.0,
+    "end": 52.0,
+    "prompt": "mid shot of a group of friends laughing",
+    "motion": "steady shot",
+    "seed": 12357,
+    "model": "sdxl",
+    "ref_image": null
+  },
+  {
+    "start": 52.0,
+    "end": 56.0,
+    "prompt": "cut to a shot of the drink being poured",
+    "motion": "fade",
+    "seed": 12358,
+    "model": "sdxl",
+    "ref_image": null
+  },
+  {
+    "start": 56.0,
+    "end": 60.0,
+    "prompt": "extreme close up of the pouring action",
+    "motion": "zoom out",
+    "seed": 12359,
+    "model": "sdxl",
+    "ref_image": null
+  },
+  {
+    "start": 60.0,
+    "end": 64.0,
+    "prompt": "wide shot of a modern cityscape",
+    "motion": "slow dolly",
+    "seed": 12360,
+    "model": "sdxl",
+    "ref_image": null
+  },
+  {
+    "start": 64.0,
+    "end": 68.0,
+    "prompt": "close up on a person walking with the drink",
+    "motion": "steady shot",
+    "seed": 12361,
+    "model": "sdxl",
+    "ref_image": null
+  },
+  {
+    "start": 68.0,
+    "end": 72.0,
+    "prompt": "mid shot of the drink in a glass reflecting light",
+    "motion": "pan left",
+    "seed": 12362,
+    "model": "sdxl",
+    "ref_image": null
+  },
+  {
+    "start": 72.0,
+    "end": 76.0,
+    "prompt": "cut to a shot of the drink in a bottle",
+    "motion": "fade",
+    "seed": 12363,
+    "model": "sdxl",
+    "ref_image": null
+  }
+]

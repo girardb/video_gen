@@ -1,0 +1,35 @@
+# Configuration for 02_audio_analyser service
+
+# CLAP server configuration
+clap:
+  server_url: "http://localhost:8002"
+  top_k: 3
+  threshold: 0.1
+
+# Beat detection configuration
+beat_detection:
+  method: "librosa"
+  hop_length: 512
+  sr: 22050
+  onset_threshold: 0.5
+  units: "time"  # Options: "time", "frames"
+
+# Audio processing settings
+processing:
+  resample_rate: 22050  # for analysis
+  normalize: true
+  trim_silence: true
+
+# Input/Output settings
+io:
+  inputs:
+    audio: "data/song.mp3"
+    lyrics: "data/lyrics.json"
+  outputs:
+    vibe_tags: "data/vibe_tags.json"
+    beats: "data/music_analysis.json"
+
+# Output format
+output:
+  vibe_format: "top3"     # Options: "top3", "all", "threshold"
+  beats_format: "json"    # Options: "numpy", "json" 

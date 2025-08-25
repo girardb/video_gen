@@ -1,0 +1,30 @@
+{
+  "_note": "Analysis based on basic audio features. Emotional interpretations are heuristic and not ML-validated.",
+  "tempo": {
+    "bpm": 117.45383522727273,
+    "description": "moderately fast, upbeat"
+  },
+  "energy": {
+    "level": 0.1543777734041214,
+    "description": "high energy"
+  },
+  "brightness": {
+    "spectral_centroid": 2772.743445431139,
+    "description": "bright, clear highs"
+  },
+  "dynamics": {
+    "variability": 0.08950460702180862,
+    "description": "highly dynamic, varied volume"
+  },
+  "emotional_tone": "moderate energy, neutral mood",
+  "musical_style": "possibly electronic/digital, moderate tempo",
+  "beat_count": 287,
+  "duration_seconds": 147.8878911564626,
+  "detected_emotions": [],
+  "enhanced_emotional_tone": "moderate energy, neutral mood",
+  "human_description": "This song has a neutral feeling. Moderately fast, upbeat with high energy. The audio analysis suggests: pop, melodic.",
+  "clap_evidence": [
+    "pop",
+    "melodic"
+  ]
+}

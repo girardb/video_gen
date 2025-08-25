@@ -1,0 +1,50 @@
+# Pipeline configuration for modular AI music-video generator
+# Controls which services are enabled and their execution order
+
+pipeline:
+  # Core services (required for basic functionality)
+  00_prompt_compactor:
+    enabled: true
+    config_file: "configs/00.yaml"
+    
+  01_music_generator:
+    enabled: true
+    config_file: "configs/01.yaml"
+    
+  02_audio_analyser:
+    enabled: true
+    config_file: "configs/02.yaml"
+    
+  03_storyboard_gen:
+    enabled: true
+    config_file: "configs/03.yaml"
+    
+  04_video_renderer:
+    enabled: true
+    config_file: "configs/04.yaml"
+    
+  05_video_assembler:
+    enabled: true
+    config_file: "configs/05.yaml"
+    
+  # Optional services (for advanced features)
+  06_style_lora:
+    enabled: false
+    config_file: "configs/06.yaml"
+    
+  07_rlhf_evaluator:
+    enabled: false
+    config_file: "configs/07.yaml"
+
+# Global settings
+global:
+  log_level: "INFO"
+  log_dir: "logs"
+  data_dir: "data"
+  output_dir: "out"
+  
+# Error handling
+error_handling:
+  stop_on_error: true
+  max_retries: 3
+  retry_delay: 5 

@@ -1,0 +1,35 @@
+# Configuration for 01_music_generator service
+
+# API configuration
+api:
+  provider: "suno"  # Options: "suno", "offline"
+  suno:
+    base_url: "https://api.sunoapi.org"
+    api_key_env: "SUNO_API_KEY"
+    model: "V4_5"  # Options: "V3_5", "V4", "V4_5", "V4_5PLUS"
+    timeout: 300  # seconds
+    
+# Input/Output settings
+io:
+  input_file: "data/suno_prompt.txt"
+  output_file: "data/song.mp3"
+  lyrics_file: "data/lyrics.json"
+  
+# Generation parameters
+generation:
+  duration: 30  # seconds
+  format: "mp3"
+  sample_rate: 48000
+  channels: 2  # stereo
+
+# Offline mode (disabled but required by config schema)
+offline:
+  enabled: false
+  generate_silent: false
+  silent_duration: 1.0
+  
+# Error handling
+error_handling:
+  max_retries: 3
+  retry_delay: 10
+  fail_if_no_output: true

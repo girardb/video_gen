@@ -1,0 +1,141 @@
+[
+  {
+    "start": 0.0,
+    "end": 4.0,
+    "prompt": "wide shot matching the song's opening mood with pop lighting with beautiful lighting and atmosphere",
+    "motion": "slow dolly",
+    "seed": 12345,
+    "model": "sdxl",
+    "ref_image": null
+  },
+  {
+    "start": 8.0,
+    "end": 12.0,
+    "prompt": "medium shot of cavemen dancing around a campfire with a glowing drink with beautiful lighting and atmosphere",
+    "motion": "pan",
+    "duration": 4.0,
+    "seed": 12347,
+    "model": "sdxl",
+    "ref_image": null
+  },
+  {
+    "start": 18.0,
+    "end": 22.0,
+    "prompt": "wide shot of cavemen marching in a line with their drinks with beautiful lighting and atmosphere",
+    "motion": "walk",
+    "duration": 4.0,
+    "seed": 12349,
+    "model": "sdxl",
+    "ref_image": null
+  },
+  {
+    "start": 34.0,
+    "end": 38.0,
+    "prompt": "extreme close up on the drink's label with animated text with beautiful lighting and atmosphere",
+    "motion": "float",
+    "duration": 4.0,
+    "seed": 12351,
+    "model": "sdxl",
+    "ref_image": null
+  },
+  {
+    "start": 46.0,
+    "end": 50.0,
+    "prompt": "close up on the drink being poured into a cup with smooth motion with beautiful lighting and atmosphere",
+    "motion": "pour",
+    "duration": 4.0,
+    "seed": 12353,
+    "model": "sdxl",
+    "ref_image": null
+  },
+  {
+    "start": 58.0,
+    "end": 62.0,
+    "prompt": "medium shot of a caveman taking a sip and puckering his lips with beautiful lighting and atmosphere",
+    "motion": "sip",
+    "duration": 4.0,
+    "seed": 12355,
+    "model": "sdxl",
+    "ref_image": null
+  },
+  {
+    "start": 70.0,
+    "end": 74.0,
+    "prompt": "extreme close up on the caveman's hand forming a fist with the cup with beautiful lighting and atmosphere",
+    "motion": "clench",
+    "duration": 4.0,
+    "seed": 12357,
+    "model": "sdxl",
+    "ref_image": null
+  },
+  {
+    "start": 82.0,
+    "end": 86.0,
+    "prompt": "wide shot of cavemen playing a primitive game with the drink with beautiful lighting and atmosphere",
+    "motion": "game",
+    "duration": 4.0,
+    "seed": 12359,
+    "model": "sdxl",
+    "ref_image": null
+  },
+  {
+    "start": 94.0,
+    "end": 98.0,
+    "prompt": "medium shot of cavemen preparing to leave the camp with beautiful lighting and atmosphere",
+    "motion": "pack",
+    "duration": 4.0,
+    "seed": 12361,
+    "model": "sdxl",
+    "ref_image": null
+  },
+  {
+    "start": 106.0,
+    "end": 110.0,
+    "prompt": "close up on the last caveman finishing his drink with beautiful lighting and atmosphere",
+    "motion": "finish",
+    "duration": 4.0,
+    "seed": 12363,
+    "model": "sdxl",
+    "ref_image": null
+  },
+  {
+    "start": 118.0,
+    "end": 122.0,
+    "prompt": "medium shot of cavemen looking at each other with a mysterious expression with beautiful lighting and atmosphere",
+    "motion": "look",
+    "duration": 4.0,
+    "seed": 12365,
+    "model": "sdxl",
+    "ref_image": null
+  },
+  {
+    "start": 130.0,
+    "end": 134.0,
+    "prompt": "wide shot of cavemen returning to their stone age homes with beautiful lighting and atmosphere",
+    "motion": "home",
+    "duration": 4.0,
+    "seed": 12367,
+    "model": "sdxl",
+    "ref_image": null
+  },
+  {
+    "start": 142.0,
+    "end": 146.0,
+    "prompt": "close up on the caveman's eyes widening with each sip with beautiful lighting and atmosphere",
+    "motion": "sip",
+    "duration": 4.0,
+    "seed": 12369,
+    "model": "sdxl",
+    "ref_image": null
+  },
+  {
+    "start": 150.0,
+    "end": 154.0,
+    "prompt": "wide shot of cavemen celebrating the drink's effects with a roar with beautiful lighting and atmosphere",
+    "motion": "roar",
+    "duration": 4.0,
+    "seed": 12371,
+    "model": "sdxl",
+    "ref_image": null
+  }
+]

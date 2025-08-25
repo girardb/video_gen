@@ -1,0 +1,56 @@
+# Configuration for 05_video_assembler service
+
+# Input/Output settings
+io:
+  inputs:
+    clips_dir: "out/clips"
+    audio: "data/song.mp3"
+    beats: "data/beats.npy"
+  output: "out/final_cut.mp4"
+  
+# Video assembly settings
+assembly:
+  fps: 24
+  resolution: [1920, 1080]  # 1080p
+  codec: "h264"
+  bitrate: "5M"
+  audio_codec: "aac"
+  audio_bitrate: "128k"
+  
+# Beat synchronization
+sync:
+  enabled: true
+  tolerance_ms: 50  # ±50ms tolerance for beat sync
+  interpolation: "linear"  # Options: "linear", "cubic"
+  
+# Post-processing effects
+post_processing:
+  upscale: false
+  grade_lut: null  # Path to LUT file
+  smooth_fps: null  # Target FPS for smoothing
+  denoise: false
+  stabilize: false
+  
+# Transition settings
+transitions:
+  type: "cut"  # Options: "cut", "fade", "crossfade"
+  duration: 0.0  # Transition duration in seconds
+  easing: "linear"
+  
+# Audio settings
+audio:
+  normalize: true
+  fade_in: 0.5  # seconds
+  fade_out: 2.0  # seconds
+  sync_method: "beat"  # Options: "beat", "manual", "auto"
+  
+# Quality settings
+quality:
+  crf: 18  # Constant Rate Factor (lower = better quality)
+  preset: "medium"  # FFmpeg preset
+  two_pass: false
+  
+# Performance
+performance:
+  threads: "auto"  # Number of threads for encoding
+  memory_limit: "4G"  # Memory limit for processing 

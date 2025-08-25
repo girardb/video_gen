@@ -1,0 +1,67 @@
+# Configuration for 04_video_renderer service
+
+# Input/Output settings
+io:
+  input: "out/storyboard.json"
+  output_dir: "out/clips"
+  ref_image: "data/ref_image.png"  # Optional
+  
+# Video generation engine
+engine:
+  type: "AnimateDiff"  # Options: "AnimateDiff", "SkyReelsV1", "M4V", "Wan2.1"
+  
+  # AnimateDiff-SDXL settings
+  animatediff:
+    model: "guoyww/animatediff-sdxl"
+    pipeline_class: "AnimateDiffPipeline"
+    num_inference_steps: 25
+    guidance_scale: 7.5
+    
+  # Alternative engines (placeholder)
+  skyreels:
+    model: "skyreels/skyreels-v1"
+    num_inference_steps: 20
+    guidance_scale: 8.0
+    
+  m4v:
+    model: "m4v/m4v-v1"
+    num_inference_steps: 30
+    guidance_scale: 7.0
+    
+  wan2:
+    model: "wan2/wan2.1"
+    num_inference_steps: 28
+    guidance_scale: 7.5
+
+# Video settings
+video:
+  fps: 12
+  resolution: [512, 512]
+  format: "mp4"
+  codec: "h264"
+  bitrate: "2M"
+  
+# Generation parameters
+generation:
+  batch_size: 1
+  num_frames: null  # Auto-calculate based on duration
+  motion_bucket_id: 127
+  fps_id: 6
+  
+# Consistency settings
+consistency:
+  use_seed: true
+  use_ref_image: true
+  seed_offset: 0
+  
+# LoRA support (optional)
+lora:
+  enabled: false
+  path: "lora/"
+  weight: 0.8
+  
+# Performance settings
+performance:
+  device: "auto"  # Options: "auto", "cpu", "cuda", "mps"
+  memory_efficient: true
+  compile: false  # torch.compile() for speed 

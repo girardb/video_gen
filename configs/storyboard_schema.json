@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["start", "end", "prompt", "motion", "seed", "model"],
+    "properties": {
+      "start": {
+        "type": "number",
+        "minimum": 0,
+        "description": "Start time in seconds"
+      },
+      "end": {
+        "type": "number",
+        "minimum": 0,
+        "description": "End time in seconds"
+      },
+      "prompt": {
+        "type": "string",
+        "minLength": 20,
+        "maxLength": 200,
+        "description": "Visual prompt for the shot (20-40 words)"
+      },
+      "motion": {
+        "type": "string",
+        "description": "Motion description for the shot"
+      },
+      "seed": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 4294967295,
+        "description": "Random seed for consistency"
+      },
+      "model": {
+        "type": "string",
+        "description": "Model reference for the shot"
+      },
+      "ref_image": {
+        "type": ["string", "null"],
+        "description": "Optional reference image path"
+      }
+    },
+    "additionalProperties": false
+  },
+  "minItems": 1,
+  "description": "Storyboard for music video generation"
+} 

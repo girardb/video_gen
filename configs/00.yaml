@@ -1,0 +1,45 @@
+# Configuration for 00_prompt_compactor service
+
+# Model configuration
+model:
+  type: "local"  # Options: "local", "openai"
+  
+  # Local model settings (LLM Server)
+  local:
+    server_url: "http://localhost:8001"
+    max_tokens: 100
+    temperature: 0.7
+    top_p: 0.9
+    
+  # OpenAI settings
+  openai:
+    model: "gpt-4o-mini"
+    max_tokens: 100
+    temperature: 0.7
+    api_key_env: "OPENAI_API_KEY"
+
+# Input/Output settings
+io:
+  input_file: "data/song_brief.txt"
+  output_file: "data/suno_prompt.txt"
+  max_chars: 200
+  
+# Prompt engineering
+prompt:
+  system_template: ""
+    
+  user_template: |
+    Convert this concept into a very short Suno music prompt. Requirements:
+    Maximum length: about 20-25 words (roughly 3-4 short sentences)
+    Include: main elements, story theme, music genre, mood, instruments
+    
+    concept:
+    {input_text}
+    
+    Start:
+
+# Validation rules
+validation:
+  banned_chars: ["#", "🎵", "🎶", "🎤", "🎧", "🎼", "🎹", "🎸", "🥁", "🎺", "🎻", "🎷"]
+  max_lines: 1
+  min_chars: 10 

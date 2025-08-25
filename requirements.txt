@@ -1,0 +1,48 @@
+# Core dependencies - Python 3.9 compatible versions
+pyyaml>=6.0
+click>=8.0
+pydantic>=1.10.0,<2.0  # Pydantic v1 for Python 3.9 compatibility
+typing-extensions>=4.0
+
+# Audio processing
+librosa>=0.10.0
+transformers>=4.30.0
+torch>=1.13.0  # Slightly older torch version for better 3.9 compatibility
+torchaudio>=0.13.0
+soundfile>=0.12.0
+
+# Video processing
+moviepy>=1.0.3
+opencv-python>=4.8.0
+ffmpeg-python>=0.2.0
+
+# AI/ML models
+diffusers>=0.21.0  # Slightly older version for compatibility
+accelerate>=0.20.0
+safetensors>=0.3.0
+
+# API clients
+openai>=1.0.0
+requests>=2.31.0
+
+# FastAPI and server dependencies
+fastapi>=0.95.0  # Slightly older for better compatibility
+uvicorn>=0.20.0
+
+# Data processing
+numpy>=1.21.0  # Compatible with Python 3.9
+pandas>=1.5.0  # Compatible with Python 3.9
+jsonschema>=4.17.0
+
+# Testing
+pytest>=7.0.0
+pytest-cov>=4.0.0
+
+# Development
+mypy>=1.0.0
+black>=23.0.0
+flake8>=6.0.0
+
+# Optional: Local models
+# llama-cpp-python>=0.2.0
+# ctransformers>=0.2.0
