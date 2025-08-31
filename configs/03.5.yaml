@@ -1,0 +1,35 @@
+# Configuration for 03.5_image_generator service
+
+# Input/Output settings
+io:
+  input: "data/storyboard.json"
+  output: "data/storyboard_with_images.json"
+  image_dir: "out/reference_images"
+
+# Image generation server
+image_server:
+  url: "http://localhost:8005"
+  timeout: 120  # 2 minutes for image generation
+  num_inference_steps: 20
+  guidance_scale: 7.5
+  negative_prompt: "blurry, low quality, distorted, text, watermark"
+
+# Image model settings
+model:
+  type: "Qwen"
+  model_id: "Qwen/Qwen-Image"
+  resolution: [1664, 928]  # 16:9 aspect ratio for video
+  aspect_ratio: "16:9"
+
+# Consistency settings
+consistency:
+  use_seed: true
+  seed_offset: 1000  # Different from video seeds
+  character_consistency: true
+  style_prompt_suffix: "high quality, detailed, cinematic lighting, professional photography, Ultra HD, 4K, cinematic composition"
+
+# Processing settings
+processing:
+  enhance_prompts: true
+  batch_size: 1
+  skip_existing: true

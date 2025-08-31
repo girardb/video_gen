@@ -2,15 +2,30 @@
 
 # Input/Output settings
 io:
-  input: "out/storyboard.json"
+  input: "data/storyboard_with_images.json"  # From service 03.5
   output_dir: "out/clips"
-  ref_image: "data/ref_image.png"  # Optional
+  audio_file: "data/generated_song.mp3"  # From service 01
+  ref_image: null  # Not used - images come from storyboard
   
-# Video generation engine
+# Video generation server
+video_server:
+  url: "http://localhost:8004"
+  timeout: 300  # 5 minutes for video generation
+  num_inference_steps: 25
+  guidance_scale: 7.5
+  negative_prompt: null  # Optional negative prompt
+
+# Video generation engine (used by video server)
 engine:
-  type: "AnimateDiff"  # Options: "AnimateDiff", "SkyReelsV1", "M4V", "Wan2.1"
+  type: "Wan2.2"  # Options: "Wan2.2", "AnimateDiff", "SkyReelsV1", "M4V"
   
-  # AnimateDiff-SDXL settings
+  # Wan2.2-S2V-14B settings (primary)
+  wan2:
+    model: "Wan-AI/Wan2.2-S2V-14B"
+    num_inference_steps: 25
+    guidance_scale: 7.5
+  
+  # AnimateDiff-SDXL settings (fallback)
   animatediff:
     model: "guoyww/animatediff-sdxl"
     pipeline_class: "AnimateDiffPipeline"
@@ -27,11 +42,6 @@ engine:
     model: "m4v/m4v-v1"
     num_inference_steps: 30
     guidance_scale: 7.0
-    
-  wan2:
-    model: "wan2/wan2.1"
-    num_inference_steps: 28
-    guidance_scale: 7.5
 
 # Video settings
 video:
@@ -60,7 +70,7 @@ lora:
   path: "lora/"
   weight: 0.8
   
-# Performance settings
+# Performance settings (for video server)
 performance:
   device: "auto"  # Options: "auto", "cpu", "cuda", "mps"
   memory_efficient: true
