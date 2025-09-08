@@ -1,0 +1,64 @@
+# Configuration for 04_video_renderer service (Image-to-Video mode)
+
+# Input/Output settings
+io:
+  input: "data/storyboard_with_images.json"  # From service 03.5 (with ref images)
+  output_dir: "out/clips"
+  audio_file: null  # Optional - TI2V doesn't use audio directly
+  ref_image: null  # Optional reference image
+  use_reference_images: true  # Use service 3.5 output
+
+# Generation mode
+mode: "i2v"  # Image-to-Video mode (requires Service 3.5)
+  
+# Video generation server
+video_server:
+  url: "http://localhost:8004"
+  timeout: 300  # 5 minutes for video generation
+  num_inference_steps: 25
+  guidance_scale: 7.5
+  negative_prompt: null  # Optional negative prompt
+
+# Video generation engine (used by video server)
+engine:
+  type: "Wan2.2"  # Options: "Wan2.2", "AnimateDiff", "SkyReelsV1", "M4V"
+  
+  # Wan2.2-TI2V-5B settings (primary) - supports both T2V and I2V
+  wan2:
+    model: "Wan-AI/Wan2.2-TI2V-5B"
+    num_inference_steps: 25
+    guidance_scale: 7.5
+
+# Video settings
+video:
+  fps: 24  # TI2V-5B supports 24fps natively
+  resolution: [1280, 704]  # 720P resolution for TI2V-5B
+  format: "mp4"
+  codec: "h264"
+  bitrate: "4M"  # Higher bitrate for 720P
+  
+# Generation parameters
+generation:
+  batch_size: 1
+  num_frames: null  # Auto-calculate based on duration
+  motion_bucket_id: 127
+  fps_id: 6
+  
+# Consistency settings
+consistency:
+  use_seed: true
+  use_ref_image: true
+  seed_offset: 0
+  
+# LoRA support (optional)
+lora:
+  enabled: false
+  path: "lora/"
+  weight: 0.8
+  
+# Performance settings (for video server)
+performance:
+  device: "auto"  # Options: "auto", "cpu", "cuda", "mps"
+  memory_efficient: true
+  compile: false  # torch.compile() for speed
+

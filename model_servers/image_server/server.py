@@ -70,9 +70,9 @@ class ImageServer:
         async def health_check():
             """Health check endpoint."""
             return HealthResponse(
-                status="healthy",
+                status="healthy" if self.pipeline is not None else "unhealthy",
                 model_loaded=self.pipeline is not None,
-                model_name=self.model_name if self.pipeline else None,
+                model_name=self.model_name if self.pipeline is not None else None,
                 device=self.device
             )
         
@@ -92,7 +92,7 @@ class ImageServer:
             """Generate image using the loaded model."""
             try:
                 if self.pipeline is None:
-                    raise HTTPException(status_code=503, detail="Model not loaded")
+                    raise HTTPException(status_code=503, detail="Model not loaded - server initialization failed")
                 
                 start_time = time.time()
                 
@@ -134,7 +134,7 @@ class ImageServer:
                 
         except Exception as e:
             self.logger.error(f"Failed to load model: {e}")
-            self.pipeline = None
+            raise RuntimeError(f"Model loading failed: {e}")
     
     def _load_sdxl_model(self):
         """Load SDXL model."""
@@ -157,8 +157,8 @@ class ImageServer:
             self.logger.info(f"SDXL model loaded successfully on {self.device}")
             
         except Exception as e:
-            self.logger.warning(f"Failed to load SDXL model: {e}, using placeholder")
-            self.pipeline = "placeholder"
+            self.logger.error(f"Failed to load SDXL model: {e}")
+            raise RuntimeError(f"SDXL model loading failed: {e}")
     
     def _load_sd_model(self):
         """Load standard Stable Diffusion model."""
@@ -181,8 +181,8 @@ class ImageServer:
             self.logger.info(f"SD model loaded successfully on {self.device}")
             
         except Exception as e:
-            self.logger.warning(f"Failed to load SD model: {e}, using placeholder")
-            self.pipeline = "placeholder"
+            self.logger.error(f"Failed to load SD model: {e}")
+            raise RuntimeError(f"SD model loading failed: {e}")
     
     def _load_qwen_image_model(self):
         """Load Qwen-Image model."""
@@ -207,8 +207,8 @@ class ImageServer:
             self.logger.info(f"Qwen-Image model loaded successfully on {self.device}")
             
         except Exception as e:
-            self.logger.warning(f"Failed to load Qwen-Image model: {e}, using placeholder")
-            self.pipeline = "placeholder"
+            self.logger.error(f"Failed to load Qwen-Image model: {e}")
+            raise RuntimeError(f"Qwen-Image model loading failed: {e}")
     
     def _generate_image(self, request: GenerateImageRequest) -> Path:
         """Generate image using the loaded pipeline."""
@@ -224,43 +224,40 @@ class ImageServer:
         if request.seed is not None:
             generator = torch.Generator(device=self.device).manual_seed(request.seed)
         
-        # Generate based on model type
-        if hasattr(self.pipeline, '__call__'):
-            # Real model loaded
-            try:
-                # Prepare generation parameters
-                generation_params = {
-                    "prompt": self._enhance_prompt_for_qwen(request.prompt),
-                    "height": request.height,
-                    "width": request.width,
-                    "num_inference_steps": request.num_inference_steps,
-                    "generator": generator,
-                }
-                
-                # Add negative prompt if provided
-                if request.negative_prompt:
-                    generation_params["negative_prompt"] = request.negative_prompt
-                
-                # Qwen-Image uses different parameter names
-                if "qwen" in self.model_name.lower():
-                    generation_params["true_cfg_scale"] = request.guidance_scale
-                else:
-                    generation_params["guidance_scale"] = request.guidance_scale
-                
-                # Generate image
-                result = self.pipeline(**generation_params)
-                
-                # Save image
-                image = result.images[0]
-                image.save(output_path)
-                
-            except Exception as e:
-                self.logger.error(f"Real model generation failed: {e}")
-                # Fall back to placeholder
-                self._generate_placeholder_image(request, output_path)
-        else:
-            # Placeholder model
-            self._generate_placeholder_image(request, output_path)
+        # Generate image - no fallbacks, fail fast
+        if not hasattr(self.pipeline, '__call__') or self.pipeline is None:
+            raise RuntimeError("No valid pipeline loaded - model failed to initialize")
+        
+        try:
+            # Prepare generation parameters
+            generation_params = {
+                "prompt": self._enhance_prompt_for_qwen(request.prompt),
+                "height": request.height,
+                "width": request.width,
+                "num_inference_steps": request.num_inference_steps,
+                "generator": generator,
+            }
+            
+            # Add negative prompt if provided
+            if request.negative_prompt:
+                generation_params["negative_prompt"] = request.negative_prompt
+            
+            # Qwen-Image uses different parameter names
+            if "qwen" in self.model_name.lower():
+                generation_params["true_cfg_scale"] = request.guidance_scale
+            else:
+                generation_params["guidance_scale"] = request.guidance_scale
+            
+            # Generate image
+            result = self.pipeline(**generation_params)
+            
+            # Save image
+            image = result.images[0]
+            image.save(output_path)
+            
+        except Exception as e:
+            self.logger.error(f"Image generation failed: {e}")
+            raise RuntimeError(f"Image generation failed: {e}")
         
         return output_path
     
@@ -285,57 +282,7 @@ class ImageServer:
         
         return prompt
     
-    def _generate_placeholder_image(self, request: GenerateImageRequest, output_path: Path):
-        """Generate a placeholder image when no model is available."""
-        from PIL import Image, ImageDraw, ImageFont
-        import hashlib
-        
-        # Create a colored background based on prompt hash
-        prompt_hash = int(hashlib.md5(request.prompt.encode()).hexdigest()[:6], 16)
-        
-        # Generate colors
-        r = (prompt_hash >> 16) & 255
-        g = (prompt_hash >> 8) & 255
-        b = prompt_hash & 255
-        
-        # Create image
-        image = Image.new('RGB', (request.width, request.height), color=(r, g, b))
-        draw = ImageDraw.Draw(image)
-        
-        # Add text
-        try:
-            # Try to use a system font
-            font = ImageFont.truetype("arial.ttf", 24)
-        except:
-            # Fallback to default font
-            font = ImageFont.load_default()
-        
-        # Draw prompt text (wrapped)
-        words = request.prompt.split()
-        lines = []
-        current_line = []
-        
-        for word in words:
-            current_line.append(word)
-            if len(' '.join(current_line)) > 30:  # Rough line length
-                lines.append(' '.join(current_line[:-1]))
-                current_line = [word]
-        
-        if current_line:
-            lines.append(' '.join(current_line))
-        
-        # Draw lines
-        y_offset = request.height // 2 - (len(lines) * 15)
-        for line in lines[:10]:  # Max 10 lines
-            bbox = draw.textbbox((0, 0), line, font=font)
-            text_width = bbox[2] - bbox[0]
-            x = (request.width - text_width) // 2
-            draw.text((x, y_offset), line, fill=(255, 255, 255), font=font)
-            y_offset += 30
-        
-        # Save placeholder image
-        image.save(output_path)
-        self.logger.info(f"Generated placeholder image: {output_path}")
+
     
     def run(self):
         """Run the FastAPI server."""

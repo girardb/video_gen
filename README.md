@@ -15,7 +15,7 @@ pip install -r requirements.txt
 python -m model_servers.llm_server --port 8001
 python -m model_servers.clap_server --port 8002
 python -m model_servers.image_server --port 8005 --model-name "Qwen/Qwen-Image"
-python -m model_servers.video_server --port 8004 --model-name "Wan-AI/Wan2.2-S2V-14B"
+python -m model_servers.video_server --port 8004 --model-name "THUDM/CogVideoX1.5-5B"
 
 # Run the full pipeline
 python orchestrate.py
@@ -49,8 +49,10 @@ video_gen/
 - **01_music_generator**: Generates music via Suno API
 - **02_audio_analyser**: Extracts lyrics, beats, and vibe tags
 - **03_storyboard_gen**: Creates video storyboard from lyrics
-- **03.5_image_generator**: Generates reference images from storyboard prompts
-- **04_video_renderer**: Renders video clips via video server (Wan2.2-S2V-14B)
+- **03.5_image_generator**: (Optional) Generates reference images for I2V mode
+- **04_video_renderer**: Renders video clips via video server (CogVideoX1.5-5B)
+  - **T2V Mode**: Direct text-to-video (skips Service 3.5)
+  - **I2V Mode**: Uses reference images from Service 3.5
 - **05_video_assembler**: Assembles final beat-synced video
 - **06_style_lora**: (Optional) Custom style training
 - **07_rlhf_evaluator**: (Optional) RLHF evaluation
@@ -59,7 +61,7 @@ video_gen/
 - **llm_server**: Serves local LLMs (Llama/Mistral) for text generation
 - **clap_server**: Serves CLAP models for audio analysis and vibe detection
 - **image_server**: Serves image generation models (Qwen-Image) for text-to-image
-- **video_server**: Serves video generation models (Wan2.2-S2V-14B) for image+audio-to-video
+- **video_server**: Serves video generation models (CogVideoX1.5-5B) for text-to-video
 
 ## 🎯 Features
 

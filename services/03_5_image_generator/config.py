@@ -17,10 +17,10 @@ class ImageServerConfig(BaseModel):
 
 class ImageModelConfig(BaseModel):
     """Configuration for image generation models."""
-    type: Literal["SDXL", "SD15", "SD21"] = Field("SDXL", description="Image model type")
-    model_id: str = Field("stabilityai/stable-diffusion-xl-base-1.0", description="Model ID")
-    resolution: List[int] = Field([1024, 1024], description="Image resolution [width, height]")
-    aspect_ratio: str = Field("1:1", description="Aspect ratio (1:1, 16:9, 9:16, etc.)")
+    type: Literal["Qwen", "SDXL", "SD15", "SD21"] = Field("Qwen", description="Image model type")
+    model_id: str = Field("Qwen/Qwen-Image", description="Model ID")
+    resolution: List[int] = Field([1664, 928], description="Image resolution [width, height]")
+    aspect_ratio: str = Field("16:9", description="Aspect ratio (1:1, 16:9, 9:16, etc.)")
 
 
 class ConsistencyConfig(BaseModel):

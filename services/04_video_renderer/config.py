@@ -113,7 +113,7 @@ class IOConfig(BaseModel):
     """Input/Output configuration."""
     input: str = Field("data/storyboard_with_images.json", description="Input storyboard file with ref images")
     output_dir: str = Field("out/clips", description="Output directory for video clips")
-    audio_file: str = Field("data/generated_song.mp3", description="Generated song file from service 01")
+    audio_file: Optional[str] = Field(None, description="Generated song file from service 01 (optional for T2V mode)")
     ref_image: Optional[str] = Field(None, description="Optional reference image path")
 
 

@@ -2,26 +2,37 @@
 
 # Input/Output settings
 io:
-  input: "data/storyboard_with_images.json"  # From service 03.5
+  input: "data/storyboard.json"  # Direct from service 03 (no images needed for T2V)
   output_dir: "out/clips"
-  audio_file: "data/generated_song.mp3"  # From service 01
-  ref_image: null  # Not used - images come from storyboard
+  audio_file: null  # Optional - TI2V doesn't use audio directly
+  ref_image: null  # Optional reference image
+  use_reference_images: false  # Set to true to use service 3.5 output
+
+# Generation mode
+mode: "t2v"  # Options: "t2v" (text-to-video), "i2v" (image-to-video)
   
 # Video generation server
 video_server:
   url: "http://localhost:8004"
-  timeout: 300  # 5 minutes for video generation
-  num_inference_steps: 25
-  guidance_scale: 7.5
+  timeout: 1800  # 30 minutes for CogVideoX generation (much slower)
+  num_inference_steps: 50  # CogVideoX recommended steps
+  guidance_scale: 6  # CogVideoX recommended guidance
   negative_prompt: null  # Optional negative prompt
 
 # Video generation engine (used by video server)
 engine:
-  type: "Wan2.2"  # Options: "Wan2.2", "AnimateDiff", "SkyReelsV1", "M4V"
+  type: "AnimateDiff"  # Using AnimateDiff (reliable with diffusers)
   
-  # Wan2.2-S2V-14B settings (primary)
+  # AnimateDiff-SDXL settings (primary) - proven T2V model
+  animatediff:
+    model: "guoyww/animatediff-sdxl"
+    pipeline_class: "AnimateDiffPipeline"
+    num_inference_steps: 25
+    guidance_scale: 7.5
+  
+  # Wan2.2-TI2V-5B settings (when custom loader is available)
   wan2:
-    model: "Wan-AI/Wan2.2-S2V-14B"
+    model: "Wan-AI/Wan2.2-TI2V-5B"
     num_inference_steps: 25
     guidance_scale: 7.5
   
@@ -45,11 +56,11 @@ engine:
 
 # Video settings
 video:
-  fps: 12
-  resolution: [512, 512]
+  fps: 24  # TI2V-5B supports 24fps natively
+  resolution: [1280, 704]  # 720P resolution for TI2V-5B
   format: "mp4"
   codec: "h264"
-  bitrate: "2M"
+  bitrate: "4M"  # Higher bitrate for 720P
   
 # Generation parameters
 generation:

@@ -7,10 +7,10 @@ from pydantic import BaseModel, Field
 
 
 class GenerateVideoRequest(BaseModel):
-    """Request model for video generation with Wan2.2-S2V."""
+    """Request model for video generation with Wan2.2-TI2V-5B."""
     prompt: str = Field(..., description="Text prompt for video generation")
-    ref_image_path: str = Field(..., description="Path to reference image")
-    audio_path: str = Field(..., description="Path to audio file")
+    ref_image_path: Optional[str] = Field(None, description="Path to reference image (optional for T2V)")
+    audio_path: Optional[str] = Field(None, description="Path to audio file (optional)")
     audio_start: float = Field(0.0, description="Start time in audio file (seconds)")
     audio_duration: float = Field(4.0, description="Duration of audio clip (seconds)")
     negative_prompt: Optional[str] = Field(None, description="Negative prompt to avoid certain content")

@@ -98,7 +98,9 @@ class ImageGeneratorService(BaseService):
         """Generate image by calling the image server API."""
         enhanced_prompt = self._enhance_prompt(prompt)
         
-        self.logger.info(f"Generating image via server: {enhanced_prompt[:50]}...")
+        self.logger.info(f"🎨 Generating image via server: {enhanced_prompt[:50]}...")
+        self.logger.info(f"📊 Parameters: {payload['width']}x{payload['height']}, steps={payload['num_inference_steps']}, seed={payload['seed']}")
+        self.logger.info(f"⏱️  Timeout set to {self.config.image_server.timeout}s (first generation may take longer)")
         
         # Prepare request payload for Qwen-Image
         payload = {
@@ -111,8 +113,10 @@ class ImageGeneratorService(BaseService):
             "seed": seed
         }
         
-        # Make request to image server
+        # Make request to image server with progress updates
         try:
+            self.logger.info("Sending generation request to image server...")
+            
             response = requests.post(
                 f"{self.config.image_server.url}/generate",
                 json=payload,
@@ -122,15 +126,16 @@ class ImageGeneratorService(BaseService):
             if response.status_code == 200:
                 result = response.json()
                 image_path = result["image_path"]
-                self.logger.info(f"Server generated image in {result.get('generation_time', 0):.1f}s: {image_path}")
+                self.logger.info(f"✅ Server generated image in {result.get('generation_time', 0):.1f}s: {image_path}")
                 return image_path
             else:
                 self.logger.error(f"Image server request failed: {response.status_code} - {response.text}")
                 raise RuntimeError(f"Image server failed: {response.status_code}")
                 
         except requests.exceptions.Timeout:
-            self.logger.error("Image server request timed out")
-            raise RuntimeError("Image server timeout")
+            self.logger.error(f"⏰ Image server request timed out after {self.config.image_server.timeout}s")
+            self.logger.error("💡 Try increasing 'timeout' in configs/03.5.yaml or check server logs")
+            raise RuntimeError(f"Image server timeout after {self.config.image_server.timeout}s")
         except Exception as e:
             self.logger.error(f"Failed to call image server: {e}")
             raise RuntimeError(f"Image server communication failed: {e}")
@@ -167,7 +172,10 @@ class ImageGeneratorService(BaseService):
             shutil.copy2(server_image_path, output_path)
             
             generation_time = time.time() - start_time
-            self.logger.info(f"Reference image {shot_index} completed in {generation_time:.1f}s")
+            self.logger.info(f"✅ Reference image {shot_index} completed in {generation_time:.1f}s")
+            
+            # Log progress
+            self.logger.info(f"📈 Progress: Generated {shot_index + 1} reference images so far")
             
             return str(output_path)
             

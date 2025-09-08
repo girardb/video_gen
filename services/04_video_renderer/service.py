@@ -115,13 +115,9 @@ class VideoRendererService(BaseService):
         
         self.logger.info(f"Generating {num_frames} frames via server for: {prompt[:50]}...")
         
-        # Prepare request payload for Wan2.2-S2V
+        # Prepare request payload for Wan2.2-TI2V-5B
         payload = {
             "prompt": prompt,
-            "ref_image_path": shot["ref_image"],  # From service 03.5
-            "audio_path": self.config.io.audio_file,  # Full song file
-            "audio_start": shot["start"],  # Extract clip from this time
-            "audio_duration": duration,  # Duration of the clip
             "num_frames": num_frames,
             "width": self.config.video.resolution[0],
             "height": self.config.video.resolution[1],
@@ -129,6 +125,20 @@ class VideoRendererService(BaseService):
             "guidance_scale": self.config.video_server.guidance_scale,
             "fps": self.config.video.fps
         }
+        
+        # Add reference image if using I2V mode or if available
+        if (hasattr(self.config, 'mode') and self.config.mode == "i2v") or \
+           (hasattr(self.config.io, 'use_reference_images') and self.config.io.use_reference_images):
+            ref_image = shot.get("ref_image")
+            if ref_image:
+                payload["ref_image_path"] = ref_image
+                self.logger.info(f"🖼️  Using reference image: {ref_image}")
+            else:
+                self.logger.warning("⚠️  I2V mode requested but no ref_image found in shot")
+        
+        # Log generation mode
+        mode = "I2V" if payload.get("ref_image_path") else "T2V"
+        self.logger.info(f"🎬 Generation mode: {mode} (Text{'+ Image' if mode == 'I2V' else ''}-to-Video)")
         
         # Add seed if using consistency
         if self.config.consistency.use_seed and "seed" in shot:
@@ -205,7 +215,24 @@ class VideoRendererService(BaseService):
             
             # Load storyboard
             storyboard = self._load_storyboard()
-            self.logger.info(f"Loaded storyboard with {len(storyboard)} shots")
+            self.logger.info(f"📋 Loaded storyboard with {len(storyboard)} shots")
+            
+            # Check generation mode
+            mode = getattr(self.config, 'mode', 't2v')
+            use_ref_images = getattr(self.config.io, 'use_reference_images', False)
+            
+            if mode == 't2v' and not use_ref_images:
+                self.logger.info("🎯 Mode: Pure Text-to-Video (T2V) - No reference images needed")
+                self.logger.info("💡 Service 3.5 can be skipped for this mode")
+            elif mode == 'i2v' or use_ref_images:
+                self.logger.info("🖼️  Mode: Image-to-Video (I2V) - Using reference images from Service 3.5")
+                # Verify shots have ref_image paths
+                shots_with_images = sum(1 for shot in storyboard if shot.get('ref_image'))
+                self.logger.info(f"📊 Found {shots_with_images}/{len(storyboard)} shots with reference images")
+                if shots_with_images == 0:
+                    self.logger.warning("⚠️  No reference images found - falling back to T2V mode")
+            else:
+                self.logger.info(f"🎬 Mode: {mode.upper()}")
             
             # Check video server availability
             if not self._check_video_server():
@@ -213,7 +240,7 @@ class VideoRendererService(BaseService):
             
             # Generate videos for each shot
             for i, shot in enumerate(storyboard):
-                self.logger.info(f"Processing shot {i+1}/{len(storyboard)}")
+                self.logger.info(f"🎬 Processing shot {i+1}/{len(storyboard)}: {shot.get('prompt', '')[:50]}...")
                 self._generate_shot(shot, i)
             
             # Validate outputs
