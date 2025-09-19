@@ -19,6 +19,10 @@ pipeline:
     enabled: true
     config_file: "configs/03.yaml"
     
+  03_5_image_generator:
+    enabled: true
+    config_file: "configs/03.5.yaml"
+    
   04_video_renderer:
     enabled: true
     config_file: "configs/04.yaml"

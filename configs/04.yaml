@@ -2,15 +2,41 @@
 
 # Input/Output settings
 io:
-  input: "out/storyboard.json"
+  input: "data/storyboard.json"  # Direct from service 03 (no images needed for T2V)
   output_dir: "out/clips"
-  ref_image: "data/ref_image.png"  # Optional
+  audio_file: null  # Optional - TI2V doesn't use audio directly
+  ref_image: null  # Optional reference image
+  use_reference_images: false  # Set to true to use service 3.5 output
+
+# Generation mode
+mode: "t2v"  # Options: "t2v" (text-to-video), "i2v" (image-to-video)
   
-# Video generation engine
+# Video generation server
+video_server:
+  url: "http://localhost:8004"
+  timeout: 1800  # 30 minutes for CogVideoX generation (much slower)
+  num_inference_steps: 50  # CogVideoX recommended steps
+  guidance_scale: 6  # CogVideoX recommended guidance
+  negative_prompt: null  # Optional negative prompt
+
+# Video generation engine (used by video server)
 engine:
-  type: "AnimateDiff"  # Options: "AnimateDiff", "SkyReelsV1", "M4V", "Wan2.1"
+  type: "AnimateDiff"  # Using AnimateDiff (reliable with diffusers)
   
-  # AnimateDiff-SDXL settings
+  # AnimateDiff-SDXL settings (primary) - proven T2V model
+  animatediff:
+    model: "guoyww/animatediff-sdxl"
+    pipeline_class: "AnimateDiffPipeline"
+    num_inference_steps: 25
+    guidance_scale: 7.5
+  
+  # Wan2.2-TI2V-5B settings (when custom loader is available)
+  wan2:
+    model: "Wan-AI/Wan2.2-TI2V-5B"
+    num_inference_steps: 25
+    guidance_scale: 7.5
+  
+  # AnimateDiff-SDXL settings (fallback)
   animatediff:
     model: "guoyww/animatediff-sdxl"
     pipeline_class: "AnimateDiffPipeline"
@@ -27,19 +53,14 @@ engine:
     model: "m4v/m4v-v1"
     num_inference_steps: 30
     guidance_scale: 7.0
-    
-  wan2:
-    model: "wan2/wan2.1"
-    num_inference_steps: 28
-    guidance_scale: 7.5
 
 # Video settings
 video:
-  fps: 12
-  resolution: [512, 512]
+  fps: 24  # TI2V-5B supports 24fps natively
+  resolution: [1280, 704]  # 720P resolution for TI2V-5B
   format: "mp4"
   codec: "h264"
-  bitrate: "2M"
+  bitrate: "4M"  # Higher bitrate for 720P
   
 # Generation parameters
 generation:
@@ -60,7 +81,7 @@ lora:
   path: "lora/"
   weight: 0.8
   
-# Performance settings
+# Performance settings (for video server)
 performance:
   device: "auto"  # Options: "auto", "cpu", "cuda", "mps"
   memory_efficient: true
